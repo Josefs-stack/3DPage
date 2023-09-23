@@ -1,45 +1,53 @@
 'use client'
 import CompFundo from '@/components/CompFundo'
 import TitleHome from '@/components/TitleHome'
-import { motion, useMotionValue, useTransform, animate } from 'framer-motion'
-import { useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
+import { motion, useMotionValue, useTransform } from 'framer-motion'
 
-export default function Home() {
-  const mouseX = useMotionValue(
-    typeof window !== 'undefined' ? window.innerWidth / 2 : 0,
-  )
-  const mouseY = useMotionValue(
-    typeof window !== 'undefined' ? window.innerHeight / 2 : 0,
-  )
-
+const Home = () => {
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
   const canRef = useRef<HTMLDivElement>(null)
+  const dampen = 70
 
-  const dampen = 40
-  const rotateX = useTransform<number, number>(mouseY, (newMouseY) => {
-    if (!canRef.current) return 0
-    const rect = canRef.current.getBoundingClientRect()
-    const newRotateX = newMouseY - rect.top - rect.height / 2
-    return -newRotateX / dampen
-  })
-  const rotateY = useTransform(mouseX, (newMouseX) => {
-    if (!canRef.current) return 0
-    const rect = canRef.current.getBoundingClientRect()
-    const newRotateY = newMouseX - rect.left - rect.width / 2
-    return newRotateY / dampen
-  })
+  const handleMouseMove = (e: MouseEvent) => {
+    if (canRef.current) {
+      const rect = canRef.current.getBoundingClientRect()
+      const x = e.clientX - rect.left - rect.width / 2
+      const y = e.clientY - rect.top - rect.height / 2
+      mouseX.set(x)
+      mouseY.set(y)
+    }
+  }
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      animate(mouseX, e.clientX)
-      animate(mouseY, e.clientY)
-    }
-    if (typeof window === 'undefined') return
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
-    }
-  }, [mouseX, mouseY])
+    const handleThrottledMouseMove = throttle(handleMouseMove, 16)
+    window.addEventListener('mousemove', handleThrottledMouseMove)
 
+    return () => {
+      window.removeEventListener('mousemove', handleThrottledMouseMove)
+    }
+  }, [])
+
+  const rotateX = useTransform<number, number>(
+    mouseY,
+    (newMouseY) => -newMouseY / dampen,
+  )
+  const rotateY = useTransform<number, number>(
+    mouseX,
+    (newMouseX) => newMouseX / dampen,
+  )
+
+  const throttle = (func: (event: MouseEvent) => void, limit: number) => {
+    let inThrottle = false
+    return (event: MouseEvent) => {
+      if (!inThrottle) {
+        func(event)
+        inThrottle = true
+        setTimeout(() => (inThrottle = false), limit)
+      }
+    }
+  }
   return (
     <motion.main className="relative w-screen h-screen overflow-hidden perspective-10 bg-gradient-to-r from-violet-500 to-fuchsia-500">
       <motion.div
@@ -57,3 +65,5 @@ export default function Home() {
     </motion.main>
   )
 }
+
+export default Home

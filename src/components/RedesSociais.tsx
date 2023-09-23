@@ -6,7 +6,7 @@ const RedesSociais = () => {
     <div className="fixed bottom-0 right-8 w-px h-2/6 flex justify-start items-start bg-white z-50">
       <div className="w-full h-2/3 flex flex-col items-center justify-between">
         <a
-          href="https://www.instagram.com/"
+          href="https://github.com/OliveiraDevs"
           target="_blank"
           rel="noopener noreferrer"
           className="w-10 h-10 rounded-full border border-white flex items-center justify-center bg-white hover:scale-110 duration-100"
@@ -14,7 +14,7 @@ const RedesSociais = () => {
           <AiFillGithub color={'#d946ef'} size={30} />
         </a>
         <a
-          href="https://www.facebook.com/"
+          href="https://www.linkedin.com/in/c410j0s3/"
           target="_blank"
           rel="noopener noreferrer"
           className="w-10 h-10 rounded-full border border-white flex items-center justify-center bg-white hover:scale-110 duration-100"
@@ -22,7 +22,7 @@ const RedesSociais = () => {
           <BiLogoLinkedin color={'#d946ef'} size={30} />
         </a>
         <a
-          href="https://www.youtube.com/"
+          href="https://wa.me/5521980903910"
           target="_blank"
           rel="noopener noreferrer"
           className="w-10 h-10 rounded-full border border-white flex items-center justify-center bg-white hover:scale-110 duration-100"
