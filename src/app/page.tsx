@@ -4,7 +4,7 @@ import TitleHome from '@/components/TitleHome'
 import React, { useEffect, useRef } from 'react'
 import { motion, useMotionValue, useTransform } from 'framer-motion'
 
-const Home = () => {
+const Motion = () => {
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
   const canRef = useRef<HTMLDivElement>(null)
@@ -66,4 +66,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default Motion
